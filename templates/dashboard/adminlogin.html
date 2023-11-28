@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="{% static 'css/dashboard/adminlogin.css'%}">
+    <title>adminlogin</title>
+    <style>
+        .login-form{
+
+            max-width: 400px;
+            min-width:50px;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto d-flex justify-content-center align-content-center" >
+
+                <div class="login-form mt-5" style="box-shadow: 10px 10px 50px 10px rgb(66, 109, 66);">
+                    <div class="d-flex justify-content-center">
+                        <img src="{% static 'images/Admin-Profile-PNG-Clipart.png' %}" width="40%" class="mt-5">
+                    </div>
+                    <div style="border-bottom-width: thick; border-bottom-color: blue;">
+                        <h2 class="text-center mt-5 mb-4">Hey Admin</h2>
+                    </div>
+                   
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% if messages %}
+                            <div class="text-danger d-flex justify-content-center mt-2">
+                                {% for message in messages%}
+                                {{message}}
+                                {%endfor%}  
+                            </div>
+                        {% endif %}
+                        <div class="form-group mx-4">
+                            <label for="email"></label>
+                            <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
+                        </div>
+                        <div class="form-group mx-4">
+                            <label for="password"></label>
+                            <input type="password" class="form-control" placeholder="password" id="password" name="password" required>
+                            <a href="#" class="mt-4 text text-danger">Forgot password?</a>
+                        </div>
+                        <div class="d-flex justify-content-center mt-4 mb-5">
+                            <button type="submit" class="btn btn-dark  login-button">Login</button>
+                        </div>
+                        
+                    </form>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block style %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link href="{% static 'css/userprofile/userprofile.css' %}" rel="stylesheet">
+<link href="{% static 'css/userprofile/order_details.css' %}" rel="stylesheet">
+
+{% endblock style %}
+
+
+{% block content%}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Left Sidebar -->
+        <nav class="col-lg-2 d-md-block sidebar">
+            <div class="position-sticky">
+                <div class="d-flex justify-content-center">
+                    <h4 class="mt-4 ml-3" style="color: rgb(70, 43, 43); font-weight:1200;">Hi {{user.username}}</h4>
+                </div>
+
+                <ul class="nav flex-column">
+                    <div class="itemsdiv mx-2 my-2">
+                        <li class="nav-item">
+                            <a class="nav-link navitem" href="{% url 'user_profile'%}">
+                                My Profile
+                            </a>
+                        </li>
+                    </div>
+                    <div class="itemsdiv mx-2 my-2">
+                        <li class="nav-item">
+                            <a class="nav-link navitem" href="{% url 'my_orders'%}">
+                                My Orders
+                            </a>
+                        </li>
+                    </div>
+                    <div class="itemsdiv mx-2 my-2">
+                        <li class="nav-item">
+                            <a class="nav-link navitem" href="{% url 'wishlist_view'%}">
+                                Wishlist
+                            </a>
+                        </li>
+                    </div>
+                    <div class="itemsdiv mx-2 my-2">
+                        <li class="nav-item">
+                            <a class="nav-link navitem" href="{% url 'user_wallet'%}">
+                                Wallet
+                            </a>
+                        </li>
+                    </div>
+                </ul>
+
+            </div>
+        </nav>
+        <div class="col-lg-10 col-md-8">
+
+            <div class=" d-flex justify-content-center mt-4 heading">
+                <h2 class="Main-heading"
+                    style="color: rgb(49, 49, 49); font-style: normal; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-weight: 600;">
+                    MY ORDERS</h2>
+            </div>
+            <div class="col-lg-10 mt-5">
+                {% for orderitem in order_items %}
+                <form method="POST" action="{% url 'order_details' order_id=orderitem.order.id%}">
+                    {% csrf_token %}
+                    <div class="card mb-3" style="box-shadow: 5px 10px 5px rgb(40, 40, 40);"><span
+                            class="border border-success"></span>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <a href="{% url 'product_details' variant_id=orderitem.variant.id %}" style="text-decoration:none">
+                                        <h6
+                                            style="color: rgb(0, 0, 0); font-family: Verdana, Geneva, Tahoma, sans-serif">
+                                            {{orderitem.product.product_name}}&nbsp&nbsp&nbsp&nbsp X{{orderitem.quantity }}
+                                        </h6>
+                                        <img src="/media/{{orderitem.variant.image1}}" width="30%">
+                                    </a>
+                                </div>
+                                <div class="col-lg-3">
+                                    <p
+                                        style="color: rgb(7, 153, 102); font-family: Verdana, Geneva, Tahoma, sans-serif">
+                                        {{orderitem.order.status}}</p>
+                                </div>
+                                <div class="col-lg-3">
+                                    <h6 style="color: rgb(250, 1, 1); font-family: Verdana, Geneva, Tahoma, sans-serif">
+                                        Rs.{{orderitem.order.total_price}}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                {% endfor %}
+                <div class="flex-row">
+                    <div class="box col-lg-12 d-flex justify-content-center mt-3 border border-2"
+                        style="background: #c1bebe;">
+                        <!-- Content for the first div -->
+                        <h2 class="head-main mx:5">ORDER ADDRESS &nbsp&nbsp&nbsp</h2>
+                        <div class="inner-box">
+                            <table>
+                                <tr>
+                                    <td>Username</td>
+                                    <td>: {{order.user.username}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Phone Number</td>
+                                    <td>: {{order.user.phone}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>: {{order.user.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td>: {{order.address.house_no}} {{order.address.village_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td>: {{order.address.village_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Country</td>
+                                    <td>: {{order.address.country}}</td>
+                                </tr>
+                                <tr>
+                                    <td>State</td>
+                                    <td>: {{order.address.state}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Pin Code</td>
+                                    <td>: {{order.address.postal_code}}</td>
+                                </tr>
+                                <!-- <tr>
+                                <td>Order Note</td>
+                                <td>: {{order.message}}</td>
+                            </tr> -->
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box col-lg-12 d-flex justify-content-center mt-5 mb-4"
+                        style="background-color: rgb(202, 202, 202);">
+                        <!-- Content for the second div -->
+                        <h2>ORDER DETAILS &nbsp&nbsp&nbsp</h2>
+                        <div class="inner-box">
+                            <table>
+                                <tr>
+                                    <td>Order id</td>
+                                    <td>: {{order.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Username</td>
+                                    <td>:{{order.user.username}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Price</td>
+                                    <td>: {{order.total_price}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Payment Methode</td>
+                                    <td>: {{order.payment_mode}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Payment Id</td>
+                                    <td>: {{order.payment_id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tracking No</td>
+                                    <td>: {{order.tracking_no}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Ordered Date</td>
+                                    <td>: {{order.created_at}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Order Status</td>
+                                    <td>: {{order.status}}</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+                {% if status == 'Delivered' %}
+                <div class="d-flex justify-content-center mt-5 mb-3">
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Return the products
+                    </button>
+                    <div class="d-flex justify-content-center">
+                        <a href="{% url 'pdf_download' id=order.id %}"><button class="btn btn-primary">Download
+                                Invoice</button></a>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Reason of returning the order</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="checkbox" id="checkbox1" name="checkbox1" value="option1">
+                                    <label for="checkbox1">Bad product quality</label><br>
+
+                                    <input type="checkbox" id="checkbox2" name="checkbox2" value="option2">
+                                    <label for="checkbox2"> Incorrect product or size</label><br>
+
+                                    <input type="checkbox" id="checkbox3" name="checkbox3" value="option3">
+                                    <label for="checkbox3"> Late delivery</label><br>
+
+                                    <input type="checkbox" id="checkbox3" name="checkbox3" value="option3">
+                                    <label for="checkbox3"> Choose not to say</label><br>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <a href="{% url 'order_return' order_id=order.id %}">
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                {% endif %}
+            </div>
+            <div class="container">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+{% block script%}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+{% endblock script %}

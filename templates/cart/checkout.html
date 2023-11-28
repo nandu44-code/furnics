@@ -1,0 +1,308 @@
+{% extends 'accounts/base.html' %}
+
+
+{% block content %}
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Checkout</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-5 main col-lg-12" id="main" style="">
+    {% if coupons %}
+    <div class="d-flex justify-content-center">
+        <label for="myDropdown" style="color:#000; font-weight:700;">
+            <h2>Coupons available for you</h2>
+        </label>
+    </div>
+
+    {% for coupon in coupons%}
+    <h6 style="font-weight:bolder;color:rgb(1, 57, 27)" class="mx-5">coupon-{{ forloop.counter }}</h6>
+    <div class=" text-dark col-lg-3 px-5 mx-5 mb-3"
+        style="background-color: #cccbcb; border:3px solid rgb(106, 106, 106);border-radius:10%;">
+        
+        <h5 class=""> Coupon Name: {{ coupon.coupon_name }}</h5>
+
+        <h6 class="col-lg-6 mt-3">Coupon Code:</h6>
+
+        <input class="col-lg-6 mt-1 coupon-code" type="text" value="{{ coupon.code }}">
+        <button type="button" onclick="copyText(this)">Copy</button>
+
+        <div class="alert alert-success mt-2" role="alert" style="display: none;">
+            Coupon code copied!
+        </div>
+
+        <h6 class="mt-3" style="color: #04090a;">"Enjoy a discount of Rs.{{ coupon.discount }} on your next purchase!"
+        </h6>
+        <p class="text-danger mt-3 pb-3">nb: This coupon is only available from {{ coupon.valid_from }} &nbspto&nbsp {{ coupon.valid_to }}</p>
+    </div>
+
+    {% endfor %}
+    {% else %}
+    <div class="d-flex justify-content-center mt-3 mb-3">
+        <label style="color:#000; font-weight:700;">There are no coupons available for you right now</label>
+    </div>
+    {% endif %}
+</div>
+<form method="POST" action="{% url 'place_order' %}">
+    {% csrf_token %}
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <h2 class="h3 mb-2 mt-5 text-black"
+                    style="color: rgb(18, 123, 25); font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                    Shipping address</h2>
+                <div class="col-lg-4 mb-5 d-flex justify-content-center">
+
+                    <div class="card-body with-border" style="border: 2px solid #000;">
+                        <h5 class="card-title" style="color:black;"><strong>{{ address.recipient_name }}</strong>
+                        </h5>
+                        <p class="card-text"
+                            style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">
+                            {{ address.house_no }}/{{ address.street_name }}<br>
+                            {{ address.village_name }}<br>
+                            {{ address.postal_code }}/{{ address.district }}<br>
+                            {{ address.state }}/{{ address.country }}
+                        </p>
+                    </div>
+                    <input type="hidden" name="selected_address" value="{{ address.id }}">
+                    <input type="hidden" name="recipient_name" value="{{ address.recipient_name }}">
+                </div>
+                <div class="col-lg-4 d-flex justify-content-end">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>click this button to see the coupons </label>
+                            <button type="button" onclick="hideshow()"
+                                style="height:40px;background-color:#09f4b1;border: none; border-radius:20%;">coupons</button>
+
+                            <p class="text-info">Enter your coupon code</p>
+                        </div>
+                        <div class=" mb-3 col-lg-6">
+                            <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
+                        </div>
+                        <div class="col-lg-4 mb-5">
+                            <button type="button" id="ApplyCoupon" class="btn-success"
+                                style="border-radius:0%; height:45px; border: 1px solid #346d44;">Apply
+                                coupon</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 p-lg-5 border bg-white">
+            <table class="table site-block-order-table mb-5">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cart_item in cart_items %}
+                    <tr>
+                        <td>{{ cart_item.product.product.product_name }} <strong class="mx-2">x</strong>
+                            {{ cart_item.quantity }}</td>
+                        <td>₹ {{ cart_item.sub_total }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td><strong class="mx-2">Tax</strong></td>
+                        <td>₹ {{ tax }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="mx-2">Grand Total</strong></td>
+                        <td id="offer_td" hidden><div class="d-flex"><del><p id="after_apply_coupan" hidden class="text-danger mx-4"></p></del><p id="after_apply_total" hidden></p></div></td>
+                        <td id="total_value">₹ {{ grand_total }}</td>
+                        <input type="hidden" value="{{grand_total}}" id="grand_total">
+                    </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <button type="submit" class="text-dark btn-warning"
+                    style="border-radius:20px; height:50px; width:300px; border: 2px solid #f4f4f4; padding:10px">
+                    Cash on delivery
+                </button>
+            </div>
+
+            <div>
+                <button class="mt-2 text-light paywithRazorpay"
+                    style="background-color:#f40909;border-radius:20px; height:50px; width:300px; border: 2px solid #f4f4f4; padding:10px;">
+                    Pay With RazorPay
+                </button>
+            </div>
+            {% if grand_total < wallet %} 
+                <div>
+                    <button class="mt-2 text-light paywithwallet"
+                        style="background-color:#094cf4;border-radius:20px; width:300px; height:50px; border: 2px solid #f4f4f4; padding:10px;">
+                        Pay With Wallet
+                    </button>
+                </div>
+            <!-- {%else%} -->
+            
+            <!-- <input type="checkbox" placeholder="apply wallet"> -->
+            {% endif %}
+    </div>
+    </div>
+</form>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div>
+        Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+      </div>
+{%endblock content%}
+
+{% block script%}
+<script>
+    var div = document.getElementById('main');
+    var display = 0;
+
+    function hideshow() {
+        if (display == 1) {
+            div.style.display = 'block';
+            display = 0
+
+        }
+        else {
+            div.style.display = 'none';
+            display = 1;
+        }
+
+    }
+</script>
+<script>
+   function copyText(button) {
+    // Find the input element related to the clicked button
+    var couponCodeInput = button.parentElement.querySelector('.coupon-code');
+
+    // Select the text inside the input
+    couponCodeInput.select();
+    couponCodeInput.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the text to clipboard
+    document.execCommand('copy');
+
+    // Optionally, provide some feedback to the user
+    //alert('Copied the coupon code: ' + couponCodeInput.value);
+    // Show the alert message when the code is copied
+    var alertMessage = button.parentElement.querySelector('.alert');
+    alertMessage.style.display = 'block';
+
+    // Hide the alert after a certain time (e.g., 3 seconds)
+    setTimeout(function() {
+        alertMessage.style.display = 'none';
+    }, 3000);
+}
+
+</script>
+<script>
+    document.getElementById('ApplyCoupon').addEventListener('click', function () {
+        var coupon_code = document.getElementById('coupon').value;
+        var grand_total = document.getElementById('grand_total').value;
+        var token = $("[name='csrfmiddlewaretoken']").val();
+        var dataToSend = {
+            key1: coupon_code,
+            key2: grand_total,
+            csrfmiddlewaretoken: token,
+        };
+        console.log("..................................")
+
+        $.ajax({
+            url: '/cart/apply-coupon/',
+            method: 'POST',
+            data: dataToSend,
+            success: function (response) {
+                // Handle the response from the server
+                is_visible=response.is_visible
+                console.log(typeof is_visible);
+                if(is_visible=='True'){
+                    var value1 =document.getElementById('after_apply_coupan');
+                    var value2 =document.getElementById('offer_td');
+                    var total_price =document.getElementById('after_apply_total');
+
+                    
+                    value1.hidden = false;
+                    value2.hidden = false;
+                    total_price.hidden = false;
+                    value1.innerHTML="₹" + " " +response.grand_totals;
+                    total_price.innerHTML="₹" + " " + response.total;
+                    var hide_previous_price=document.getElementById('total_value')
+                    hide_previous_price.hidden = true;
+                }
+                document.getElementById('total_value').innerText = "₹" + " " + response.total;
+                
+
+                document.getElementById('grand_total').innerText = response.total;
+            },
+            error: function (error) {
+                // Handle errors
+                console.error('Error:', error);
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+        $('.paywithwallet').click(function (e) {
+            e.preventDefault();
+            console.log("Clicked the wallet buttonn");
+            var address_id = $("[name='selected_address']").val();
+            var token = $("[name='csrfmiddlewaretoken']").val();
+    
+            data = {
+                'selected_address': address_id,
+                'payment_mode': 'wallet',
+                'payment_id': '',
+                csrfmiddlewaretoken: token,
+    
+            };
+            $.ajax({
+                url: '/cart/place-order/',
+                method: 'POST',
+                data: data,
+                
+                success: function (responseData) {
+                console.log(responseData);
+                    swal({
+                        title: "Congratulations!",
+                        text: "Your order has been placed successfully",
+                        icon: "success",
+                        buttons: true,
+                        dangerMode: true,
+                    }).then((willDelete) => {
+                        if (willDelete) {
+                        console.log('...........');
+                            window.location.href = '/cart/order-success/'
+                        } else {
+                            swal("Your imaginary file is safe!");
+                        }
+                    });
+                },
+                error: function (error) {
+                    // Callback function to handle errors
+                    console.error('Error:', error);
+                }
+            });
+    
+    
+    
+        });
+
+    });
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+{% endblock script %}

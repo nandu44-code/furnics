@@ -1,0 +1,219 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/accounts/signup.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container d-flex justify-content-center">
+	<div class="row signup-container ">
+			<div class="signup-form">
+				<h2 class="text-center mb-4 text-success">Signup to Furnics.4U</h2>
+			
+				<form method="POST" id="registrationForm" >
+					{% csrf_token %}
+					{% if messages %}
+					<div class="text-danger d-flex justify-content-center mt-2" id="message">
+						{% for message in messages%}
+						{{message}}
+						{%endfor%}
+						
+
+					</div>
+
+					{% endif %}
+					<div class="text-danger d-flex justify-content-center mt-2">
+						
+						<p class="text-danger alert_tag" id="alert_tag"></p>
+
+					</div>
+					
+	
+					<div class="form-group">
+						<label for="username"></label>
+						<input type="text" class="form-control" id="username" name="username" placeholder="Enter a user name for you?"
+							required autocomplete="new-password">
+					</div>
+					<div class="form-group">
+						<label for="email"></label>
+						<input type="email" class="form-control" id="email" name="email" placeholder="what's your email?" required autocomplete="new-password">
+					</div>
+					<div class="form-group">
+						<label for="number"></label>
+						<input type="tel" class="form-control" id="phone" name="phone_no" placeholder="what's your Phone number?"
+							required autocomplete="new-password">
+					</div>
+					<div class="form-group">
+						<label for="password"></label>
+	
+						<input type="password" class="form-control" id="password" name="password" placeholder="Password"
+							required autocomplete="new-password">
+						<input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+						<label for="showPassword">Show Password</label>
+					</div>
+					<div class="form-group">
+						<label for="password"></label>
+	
+						<input type="password" class="form-control" id="confirmpassword" name="confirmpassword"
+							placeholder="confirm" autocomplete="new-password">
+						<input type="checkbox" id="showConfirmPassword" onclick="toggleConfirmPasswordVisibility()">
+						<label for="showConfirmPassword">Show Password</label>
+	
+					</div>
+					<div class="d-flex justify-content-center">
+						<button id="test" type="submit" class="btn btn-primary btn-block signup_button mt-3">Verify otp</button>
+					</div>
+	
+				</form>
+				<div class="d-flex justify-content-center">	
+					<p class="mt-4 ">Already an user? <a href="{% url 'user_login'%}">Click here to login</a></p>
+				</div>
+				
+			</div>
+
+		
+	</div>
+</div>
+
+
+{% endblock %}
+
+
+<!-- block is for validating the data user submiting and checking if that meets the standard we are expecting -->
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    setTimeout(function(){
+        $('#message').fadeOut('slow')
+    },4000)
+</script>
+
+<script>
+		$(document).ready(function () {
+			document.getElementById('alert_tag');
+
+			$("#registrationForm").submit(function (event) {
+				// Prevent the form from submitting
+				event.preventDefault();
+		
+				// Perform your validation here
+				if (validateForm()) {
+					// If the form is valid, you can submit it
+					console.log("Form is valid. Submitting...");
+
+
+					$(this).unbind('submit').submit();
+				} else {
+					console.log("Form is not valid. Please check your inputs.");
+				}
+			});
+		
+			function validateForm() {
+				// Implement your validation logic here
+				var username = $("#username").val();
+				var email = $("#email").val();
+				var phone = $("#phone").val();
+				var password = $("#password").val();
+				var confirmPassword = $("#confirmpassword").val(); // Match the ID here
+		
+				// Example validation - You should customize this based on your requirements
+				if (username.length < 5) {
+					console.log("username");
+					document.getElementById('alert_tag').innerHTML="Username must be at least 5 characters long."
+					//alert("Username must be at least 3 characters long.");
+					return false;
+				}
+				if (!isValidUsername(username)) {
+					document.getElementById('alert_tag').innerHTML="Invalid username"
+					return false;
+				}
+
+				if (!isValidEmail(email)) {
+					document.getElementById('alert_tag').innerHTML="Invalid email address"
+					return false;
+				}
+		
+				if (password.length < 8){
+					document.getElementById('alert_tag').innerHTML="Password must be at least 8 characters long."
+
+				}
+		
+				if (!isValidPhoneNumber(phone)) {
+					document.getElementById('alert_tag').innerHTML="Invalid phone number. Please enter a 10-digit phone number"
+					return false;
+				}
+
+				if (!isValidPasswords(password)) {
+					document.getElementById('alert_tag').innerHTML="Invalid password"
+					return false;
+				}
+		
+				if (password !== confirmPassword) {
+					document.getElementById('alert_tag').innerHTML="Passwords do not match"
+					return false;
+				}
+
+
+				console.log('hihihihiji')
+		
+				return true;
+			}
+			function isValidUsername(username){
+				//Basic username validation using a regular expression
+				var usernameregex=/^\S*$/
+				return usernameregex.test(username);
+			}
+		
+			function isValidEmail(email) {
+				// Basic email validation using a regular expression
+				var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				return emailRegex.test(email);
+			}
+		
+			function isValidPhoneNumber(phone) {
+				// Basic phone number validation using a regular expression
+				var phoneRegex = /^[0-9]{10}\S*$/;
+				return phoneRegex.test(phone);
+			}
+			function isValidPasswords(password) {
+				console.log("password validation")
+				// Basic phone number validation using a regular expression
+				var passwordregex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+				return passwordregex.test(password);
+			}
+		
+		});
+		
+</script>
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        var showPasswordCheckbox = document.getElementById("showPassword");
+
+        if (showPasswordCheckbox.checked) {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+</script>
+<script>
+    function toggleConfirmPasswordVisibility() {
+        var passwordInput = document.getElementById("confirmpassword");
+        var showPasswordCheckbox = document.getElementById("showConfirmPassword");
+
+        if (showPasswordCheckbox.checked) {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+</script>
+
+
+
+{% endblock %}

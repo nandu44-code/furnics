@@ -1,0 +1,36 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+    {% if variant %}
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="row mx-5">
+            <div class="col">
+                <img src="/media/{{variant.image1}}" width="60%">
+               
+            </div>
+        </div>
+        <div class="row mx-5">
+            <div class="col">
+                <img src="/media/{{variant.image2}}" width="60%">
+                
+            </div>
+        </div>
+        <div class="row mx-5">
+            <div class="col">
+                <img src="/media/{{variant.image3}}" width="60%">
+                
+            </div>
+        </div>
+        <div class="row mx-5">
+            <div class="col">
+                <img src="/media/{{variant.image4}}" width="60%">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+</main>
+
+{% endblock %}

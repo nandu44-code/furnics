@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Basic styles for the invoice */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #invoice {
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        #invoice header {
+            text-align: center;
+        }
+
+        #invoice h1 {
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        #invoice .details {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #invoice .client-info {
+            text-align: left;
+        }
+
+        #invoice .client-info p {
+            margin: 3px 0;
+        }
+
+        #invoice .invoice-info {
+            text-align: right;
+        }
+
+        #invoice .invoice-info p {
+            margin: 3px 0;
+        }
+
+        #invoice table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #invoice table th, #invoice table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #invoice table th {
+            background-color: #f2f2f2;
+        }
+
+        #invoice table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #invoice table tr:hover {
+            background-color: #ddd;
+        }
+
+        #invoice table td.total {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .details {
+    display: flex; /* Make the container a flex container */
+    justify-content: space-between; /* Distribute child elements horizontally */
+    align-items: center; /* Center-align child elements vertically */
+}
+
+.client-info, .invoice-info {
+    flex: 1; /* Distribute available space evenly among child elements */
+    padding: 10px; /* Add padding for spacing */
+    border: 1px solid #ccc; /* Add a border for separation (optional) */
+    background-color: #f2f2f2; /* Add background color (optional) */
+}
+
+.client-info p, .invoice-info p {
+    margin: 5px 0; /* Add margin for spacing between paragraphs */
+}
+
+    </style>
+</head>
+<body>
+    <div id="invoice">
+        <header>
+            <h1>Sales Report</h1>
+        </header>
+       <table class="table text-start align-middle table-bordered table-hover mb-5">
+                <thead>
+                <tr class="text-dark">
+                    <th scope="col">Order Id</th>
+                    <th scope="col">Tracking No</th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Created At</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{order.id}}</td>
+                    <td>{{order.tracking_no}}</td>
+                    <td>{{order.total_price}}</td>
+                    <td>{{order.status}}</td>
+                    <td>{{order.created_at}}</td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+    </div>
+</body>
+</html>

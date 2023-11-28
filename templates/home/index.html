@@ -1,0 +1,159 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+		<!-- End Header/Navigation -->  
+
+		<!-- Start Hero Section -->
+		{% block content %}
+			<div class="hero">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-lg-5">
+							<div class="intro-excerpt">
+								<h1>"Transform Your Space with  <span clsas="d-block">Furniture That Speaks Fun and Functionality!"</span></h1>
+								<p class="mb-4">"Elevate Your Surroundings with Furniture That Infuses Joy into Every Corner."</p>
+								<p><a href="{% url 'shop_page' %}" class="btn btn-secondary me-2">Shop Now</a>
+							</div>
+						</div>
+						<div class="col-lg-7">
+							<!-- <div class="hero-img-wrap">
+								<img src="{% static 'images/couch.png' %}" class="img-fluid"> 
+							 </div>  -->
+						</div>
+					</div>
+				</div>
+			</div>
+		<!-- End Hero Section
+
+		<!-- Start Product Section -->
+		<div class="product-section">
+			<div class="container">
+				<div class="row">
+
+					<!-- Start Column 1 -->
+					<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+						<h2 class="mb-4 section-title">Crafted with excellent material.</h2>
+						<p class="mb-4">we are giving you high quality products manufactured by carpenters from all over the world </p>
+						<p><a href="{% url 'shop_page' %}" class="btn">Explore</a></p>
+					</div> 
+					<!-- End Column 1 -->
+
+					<!-- Start Column 2 -->
+					{% for banner in banner %}
+					<div class="col-lg-8 col-md-4 col-lg-3 mb-5 mb-md-0 mx-5">
+						<img src="/media/{{ banner.banner_image }}" class="img-fluid" width="200%" >
+					</div> 
+					{% endfor %}
+					<!-- End Column 2 -->
+
+					<!-- Start Column 3 -->
+
+					<!-- End Column 4 -->
+
+				</div>
+			</div>
+		</div>
+		<!-- End Product Section -->
+
+		<!-- Start Why Choose Us Section -->
+		<div class="why-choose-section">
+			<div class="container">
+				<div class="row justify-content-between">
+					<div class="col-lg-6">
+						<h2 class="section-title">Why Choose Us</h2>
+						<p>"Choose us for unparalleled quality and service, backed by years of expertise and a commitment to customer satisfaction."</p>
+
+						<div class="row my-5">
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static 'images/truck.svg' %}" alt="Image" class="img-fluid">
+									</div>
+									<h3>Fast &amp; Free Shipping</h3>
+									<p>"Benefit from our rapid and cost-free shipping service ensuring prompt delivery of your items straight to your door."</p>
+								</div>
+							</div>
+
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static 'images/bag.svg' %}" alt="Image" class="img-fluid">
+									</div>
+									<h3>Easy to Shop</h3>
+									<p>
+										"Effortlessly shop, with round-the-clock support, and stress-free returns, ensuring a seamless experience for your convenience.</p>
+								</div>
+							</div>
+
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static 'images/support.svg' %}" alt="Image" class="imf-fluid">
+									</div>
+									<h3>24/7 Support</h3>
+									<p>Benefit from our services with reliable, round-the-clock support available to assist you anytime, day or night, without interruption."</p>
+								</div>
+							</div>
+
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static 'images/return.svg' %}" alt="Image" class="imf-fluid">
+									</div>
+									<h3>Hassle Free Returns</h3>
+									<p>Our hassle-free returns policy ensures a seamless process, allowing you to return items effortlessly for a stress-free shopping experience.</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-lg-5">
+						<div class="img-wrap">
+							<img src="{% static 'images/why-choose-us-img.jpg' %}" alt="Image" class="img-fluid">
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- End Why Choose Us Section -->
+
+		<!-- Start We Help Section -->
+		<div class="we-help-section">
+			<div class="container">
+				<div class="row justify-content-between">
+					<div class="col-lg-7 mb-5 mb-lg-0">
+						<div class="imgs-grid">
+							<div class="grid grid-1"><img src="{% static 'images/img-grid-1.jpg' %}" alt="Untree.co"></div>
+							<div class="grid grid-2"><img src="{% static 'images/img-grid-2.jpg' %}" alt="Untree.co"></div>
+							<div class="grid grid-3"><img src="{% static 'images/img-grid-3.jpg' %}" alt="Untree.co"></div>
+						</div>
+					</div>
+					<div class="col-lg-5 ps-lg-5">
+						<h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
+						<p>"We validate your vision and bring it to life with contemporary interior designs."</p>
+						<ul class="list-unstyled custom-list my-4">
+							<li>Donec vitae odio quis nisl dapibus malesuada</li>
+							<li>Donec vitae odio quis nisl dapibus malesuada</li>
+							<li>Donec vitae odio quis nisl dapibus malesuada</li>
+							<li>Donec vitae odio quis nisl dapibus malesuada</li>
+						</ul>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End We Help Section -->
+
+		<!-- Start Popular Product -->
+		<div class="popular-product">
+			<div class="container">
+				<div class="row">
+
+					
+     {% endblock %}
+
+
+
+		<!-- Start Footer Section -->
+		
