@@ -136,7 +136,7 @@ def add_variant(request,product_id):
         image2 = images[1]
         image3 = images[2]
         image4 = images[3]
-        if Variation.objects.filter(color=color).exists():
+        if Variation.objects.filter(color=color,product=product).exists():
             messages.error(request,"color is already selected")
             return redirect('variant_view')
         else:
