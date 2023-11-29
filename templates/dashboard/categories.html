@@ -35,14 +35,14 @@
                         <!-- Category Name Field -->
                         <div class="form-group">
                             <label for="categoryName">Category Name:</label>
-                            <input type="text" class="form-control" id="categoryName" name="categoryName" pattern="/^[A-Za-z]+\S*$/" required>
+                            <input type="text" class="form-control" id="categoryName" name="categoryName"  required>
                         </div>
 
                         <!-- Category Description Field -->
                         <div class="form-group">
                             <label for="categoryDescription">Category Description:</label>
                             <textarea class="form-control" id="categoryDescription" name="categoryDescription" rows="4"
-                            pattern="/^[A-Za-z]+\S*$/" required></textarea>
+                             required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="cat_img">Category Image:</label>
@@ -79,13 +79,13 @@
                         <div class="form-group">
                             <label for="categoryName">Category Name:</label>
                             <input type="text" class="form-control" id="categoryName" name="categoryName"
-                                value="{{category.category_name}}" pattern="/^[A-Za-z]+\S*$/" required>
+                                value="{{category.category_name}}"  required>
                         </div>
 b
                         <!-- Category Description Field -->
                         <div class="form-group">
                             <label for="categoryDescription">Category Description:</label>
-                            <textarea class="form-control" id="categoryDescription" name="categoryDescription" rows="4" pattern="/^[A-Za-z]+\S*$/"
+                            <textarea class="form-control" id="categoryDescription" name="categoryDescription" rows="4" 
                                 required>{{category.description}}</textarea>
                         </div>
                         <div class="form-group">
