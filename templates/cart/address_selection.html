@@ -25,7 +25,7 @@
         {% endfor %}
    
     {% endif %}
-    {% if address == None or default_address == None %}
+    {% if address != None or default_address != None %}
     <form id="addressSelectionForm" action="{% url 'checkout_page' %}" method="post">
         {% csrf_token %}
         <div class="row mt-5 mx-5 my-5 mb-5">
